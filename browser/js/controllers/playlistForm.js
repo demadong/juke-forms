@@ -1,10 +1,11 @@
-app.controller('newPlaylist', function($scope, playlistFactory) {
+app.controller('newPlaylist', function($scope, $state, playlistFactory) {
 	$scope.submit = function() {
 		var newPlaylist = {
 			name: $scope.name
 		};
+
 		playlistFactory.create(newPlaylist).then(function(playlist) {
-			$scope.reset();
+			$state.go( 'playlist', { playlistId: playlist._id } )
 		});
 	};
 
