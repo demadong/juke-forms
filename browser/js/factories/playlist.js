@@ -28,19 +28,19 @@ app.factory('playlistFactory', function($http) {
 		fetchAll: function() {
 			return $http.get('/api/playlists/').then(res => {
 				angular.copy( res.data, cachedPlaylists );
-
-				cachedPlaylists.forEach( function( playlist ) {
-					playlist.songs.forEach( function( song ) {
-						song.audioUrl = "/api/songs/" + song + ".audio";
-					});
-				});
-
 				return cachedPlaylists;
 			});
 		},
 
 		fetchById: function( playlistId ) {
-			return $http.get('/api/playlists/' + playlistId).then( res => res.data );
+			return $http.get('/api/playlists/' + playlistId).then( res => res.data )
+				.then( function( playlist ) {
+					playlist.songs.forEach( function( song ) {
+						song.audioUrl = '/api/songs/' + song._id + '.audio';
+					})
+
+					return playlist;
+				});
 		}
 
 	}
